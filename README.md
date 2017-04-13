@@ -3,6 +3,13 @@
 This image simply provides Caddy precompiled and -installed, ready to use out
 of the box. Additionally, it allows for simple extension with plugins.
 
+## Available tags
+
+All available tags are always listed [in Docker Hub](https://hub.docker.com/r/icedream/caddy/tags), the list below explains the maintained tags:
+
+- `latest`: Latest version of this image (intended to target `master` branch of Caddy).
+- `stable`, `0`, `0.9`, `0.9.5`: Latest stable version (last release of Caddy).
+
 ## About Caddy
 
 Caddy is a modern implementation of a web server with a focus on security and
