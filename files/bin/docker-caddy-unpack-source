@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -e
+
+if [ -n "${DISABLE_SOURCE_COMPRESSION}" ]; then
+  exit 0
+fi
+
+if [ ! -d "${GOPATH}/src/github.com/mholt/caddy" ]; then
+  mkdir -p "${GOPATH}"
+  tar xJ -C "${GOPATH}" -f "/usr/src/go.tar.xz"
+  rm "/usr/src/go.tar.xz"
+fi

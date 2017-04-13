@@ -1,0 +1,60 @@
+#!/bin/bash
+
+set -e
+
+pluginspath="$GOPATH/src/github.com/mholt/caddy/caddy/caddymain/install_plugins.go"
+
+plugin() {
+  echo "*** Fetching plugin $1..."
+
+  # Generate Go import path from given Git URL
+  importpath="${3:-$(echo "$1" | sed -e 's,^.\+://,,' -e 's,\.git$,,')}"
+  git clone "$1" "$GOPATH/src/$importpath"
+
+  (
+    cd "$GOPATH/src/$importpath"
+
+    # Checkout wanted version if any given
+    if [ ! -z "$2" ]
+    then
+      git checkout "$2"
+    fi
+
+    echo "*** Preparing plugin $1..."
+
+    # Fetch dependencies
+    go get -d -v .
+
+    # Run generate across all files (if any extra tools are necessary you will
+    # need to install them before running this script)
+    go generate -v .
+  )
+
+  docker-caddy-remove-git-metadata
+
+  # Add the newly available plugin to an extra Go source file that will be
+  # compiled into the Caddy binary along with the rest of the source tree.
+  if [ ! -e "$pluginspath" ]
+  then
+    echo "package caddymain" > "$pluginspath"
+  fi
+  echo "*** Adding ${importpath} to $pluginspath..."
+  echo "import _ \"${importpath}\"" >> "$pluginspath"
+}
+
+docker-caddy-unpack-source
+
+# Parse arguments and prepare each given plugin.
+# Supported syntaxes (where reference can be a commit hash or branch name etc.):
+#   - http://server.com/user/repository.git
+#   - https://server.com/user/repository.git
+#   - git://server.com/user/repository.git
+#   - http://server.com/user/repository.git#reference
+#   - https://server.com/user/repository.git#reference
+#   - git://server.com/user/repository.git#reference
+for plugin in "$@"; do
+    (IFS='#'; plugin $plugin);
+done
+
+# Rebuild Caddy with the given plugins now installed
+exec docker-caddy-build

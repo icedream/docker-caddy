@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -e
+
+export PATH="$GOPATH/bin:$PATH"
+
+docker-caddy-unpack-source
+
+cd "$GOPATH/src/github.com/mholt/caddy/caddy"
+
+# Make sure all dependencies are available
+go get -d -v .
+
+docker-caddy-remove-git-metadata
+
+./build.bash "/usr/local/bin/caddy"
+
+# Remove some reproducible and for runtime unnecessary build output files
+# to save on the image size later on
+rm -rfv \
+  "/tmp"/* \
+  "/var/tmp"/* \
+  "exec" \
+  "lib" \
+  "pkg"

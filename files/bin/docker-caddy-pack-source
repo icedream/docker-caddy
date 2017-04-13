@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -e
+
+if [ -n "${DISABLE_SOURCE_COMPRESSION}" ]; then
+  exit 0
+fi
+
+if [ ! -d "${GOPATH}/src/github.com/mholt/caddy" ]; then
+  echo "Tried to pack source when the source directory has been deleted." >&2
+  exit 1
+fi
+
+(
+  cd "${GOPATH}"
+  mkdir -p "/usr/src"
+  tar cJ -f "/usr/src/go.tar.xz" .
+)
+
+exec rm -r "${GOPATH}"

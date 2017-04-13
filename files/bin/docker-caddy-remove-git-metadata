@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -e
+
+if [ -n "${DISABLE_GIT_METADATA_REMOVAL}" ]; then
+  exit 0
+fi
+
+# Remove Git metadata
+exec find "${GOPATH}" \
+  -name .git -type d \
+  ! -path '*/src/github.com/mholt/caddy/*' \
+  -exec rm -r {} +
