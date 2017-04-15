@@ -47,5 +47,6 @@ RUN \
 # so for example binding Caddy to port 2200 and telling Docker to forward port 80 to port 2200 in the container
 # should be just fine.
 
+WORKDIR /data
 ENTRYPOINT ["caddy"]
-CMD ["-agree","-conf=/data/Caddyfile"]
+CMD ["-agree"]
