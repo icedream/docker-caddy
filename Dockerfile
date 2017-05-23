@@ -1,4 +1,4 @@
-FROM golang:1.8-alpine
+FROM golang:1.8.1-alpine
 
 WORKDIR /data
 
@@ -30,7 +30,7 @@ RUN \
 	sed -i 's,\r,,g' /usr/local/bin/*
 
 # Install Caddy itself
-ARG CADDY_VERSION=v0.10.0
+ARG CADDY_VERSION=v0.10.1
 RUN \
 	echo "*** Fetching Caddy..." &&\
 	git clone --recursive "https://github.com/mholt/caddy.git" \
