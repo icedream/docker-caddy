@@ -30,7 +30,7 @@ RUN \
 	sed -i 's,\r,,g' /usr/local/bin/*
 
 # Install Caddy itself
-ARG CADDY_VERSION=v0.10.3
+ARG CADDY_VERSION=v0.10.4
 RUN \
 	echo "*** Fetching Caddy..." &&\
 	git clone --recursive "https://github.com/mholt/caddy.git" \
