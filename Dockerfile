@@ -1,4 +1,4 @@
-FROM golang:1.8.3-alpine
+FROM golang:1.9-alpine
 
 WORKDIR /data
 
@@ -30,11 +30,18 @@ RUN \
 	sed -i 's,\r,,g' /usr/local/bin/*
 
 # Install Caddy itself
-ARG CADDY_VERSION=v0.10.6
+ARG CADDY_VERSION=v0.10.7
 RUN \
 	echo "*** Fetching Caddy..." &&\
 	git clone --recursive "https://github.com/mholt/caddy.git" \
 		"$GOPATH/src/github.com/mholt/caddy" &&\
+	git clone --recursive "https://github.com/caddyserver/buildworker.git" \
+		"$GOPATH/src/github.com/caddyserver/buildworker" || (\
+			git clone --recursive "https://github.com/caddyserver/builds.git" \
+				"$GOPATH/src/github.com/caddyserver/buildworker" &&\
+			sed -i 's,package builds,package buildworker,g' \
+				"$GOPATH/src/github.com/caddyserver/buildworker"/*.go \
+		) &&\
 	(cd "$GOPATH/src/github.com/mholt/caddy" &&\
 		git checkout "$CADDY_VERSION") &&\
 	docker-caddy-build &&\

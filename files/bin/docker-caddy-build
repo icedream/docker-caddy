@@ -13,7 +13,8 @@ go get -d -v .
 
 docker-caddy-remove-git-metadata
 
-./build.bash "/usr/local/bin/caddy"
+go run ./build.go "/usr/local/bin/caddy"
+mv caddy /usr/local/bin
 
 # Remove some reproducible and for runtime unnecessary build output files
 # to save on the image size later on
