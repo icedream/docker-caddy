@@ -8,7 +8,7 @@ of the box. Additionally, it allows for simple extension with plugins.
 All available tags are always listed [in Docker Hub](https://hub.docker.com/r/icedream/caddy/tags), the list below explains the maintained tags:
 
 - `latest`: Latest version of this image (intended to target `master` branch of Caddy).
-- `stable`, `0`, `0.10`, `0.10.8`: Latest stable version (last release of Caddy).
+- `stable`, `0`, `0.10`, `0.10.9`: Latest stable version (last release of Caddy).
 
 ### Older tags
 

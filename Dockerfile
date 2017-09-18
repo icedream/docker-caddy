@@ -30,18 +30,13 @@ RUN \
 	sed -i 's,\r,,g' /usr/local/bin/*
 
 # Install Caddy itself
-ARG CADDY_VERSION=v0.10.8
+ARG CADDY_VERSION=v0.10.9
 RUN \
 	echo "*** Fetching Caddy..." &&\
 	git clone --recursive "https://github.com/mholt/caddy.git" \
 		"$GOPATH/src/github.com/mholt/caddy" &&\
-	git clone --recursive "https://github.com/caddyserver/buildworker.git" \
-		"$GOPATH/src/github.com/caddyserver/buildworker" || (\
-			git clone --recursive "https://github.com/caddyserver/builds.git" \
-				"$GOPATH/src/github.com/caddyserver/buildworker" &&\
-			sed -i 's,package builds,package buildworker,g' \
-				"$GOPATH/src/github.com/caddyserver/buildworker"/*.go \
-		) &&\
+	git clone --recursive "https://github.com/caddyserver/builds.git" \
+		"$GOPATH/src/github.com/caddyserver/builds" &&\
 	(cd "$GOPATH/src/github.com/mholt/caddy" &&\
 		git checkout "$CADDY_VERSION") &&\
 	docker-caddy-build &&\
