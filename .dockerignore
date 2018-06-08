@@ -6,3 +6,5 @@
 Dockerfile
 
 .editorconfig
+
+*.md

@@ -12,6 +12,7 @@ All available tags are always listed [in Docker Hub](https://hub.docker.com/r/ic
 
 ### Older tags
 
+- `0.10`, `0.11.14`
 - `0.9`, `0.9.5`
 
 ## About Caddy
